@@ -2,6 +2,7 @@ import time
 import inspect
 import contextlib
 import datetime
+import io
 
 class Task4_class:
     '''Class decorator which executes the passed in function and prints its execution time, the number of time the function was called, and 
@@ -30,11 +31,14 @@ class Task4_class:
         timeVar = time.time()
         # try to call the function
         try:
-            # redirect possible output to stdout
-            with open("Task4.txt", "a") as f:
-                with contextlib.redirect_stdout(f):
-                    output = self.func(*args, **kwargs)
+            # redirect possible output from stdout
+            with contextlib.redirect_stdout(io.StringIO()) as func_print:
+                output = self.func(*args, **kwargs)
+            
             timeVar = time.time() - timeVar
+
+            # retrive the prints
+            func_print = func_print.getvalue()
         # if it fails write to log file
         except Exception as err:
             with open("Task4_log.txt", "a") as f:
@@ -44,6 +48,7 @@ class Task4_class:
             # set timeVar to None, so the fail time won't get saved
             timeVar = None
             output = None
+            func_print = None
 
         # save the execution time
         if timeVar != None:
@@ -78,7 +83,9 @@ class Task4_class:
                 print(f"\nSource:", end="")
                 for line in source_code:
                     print(f"\t{line}", end="")
-                print(f"\nOutput:\t{output}\n")
+                print(f"\nReturn:\t{output}\n")
+                print(f"Prints:")
+                print(f"{func_print}\n")
 
         return output
 
