@@ -1,3 +1,5 @@
+Work by Valeriy Novossyolov
+
 This project consists of 1 main executable file "main.py" and 4 different modules. Each of the modules contains decorators used in "main.py". The project is the part of the Assignment 1 for Software Design with Python course.
 
 *Requires Python version 3.3 or newer.
